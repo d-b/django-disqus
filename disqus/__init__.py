@@ -1,3 +1,4 @@
+import json
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -6,7 +7,6 @@ import urllib.error
 import urllib.parse
 
 from django.core.management.base import CommandError
-from django.utils import simplejson as json
 
 
 def call(method, data, post=False):

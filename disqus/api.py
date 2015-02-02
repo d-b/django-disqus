@@ -1,12 +1,8 @@
+import json
 from urllib.parse import urlencode
 import urllib.request
 import urllib.error
 import urllib.parse
-
-try:
-    import json
-except ImportError:
-    from django.utils import simplejson as json
 
 # A custom ProxyHandler for the urllib2 module that will not
 # auto-detect proxy settings
