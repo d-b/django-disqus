@@ -1,5 +1,7 @@
-from urllib import urlencode
-import urllib2
+from urllib.parse import urlencode
+import urllib.request
+import urllib.error
+import urllib.parse
 
 try:
     import json
@@ -8,15 +10,19 @@ except ImportError:
 
 # A custom ProxyHandler for the urllib2 module that will not
 # auto-detect proxy settings
-proxy_support = urllib2.ProxyHandler({})
-opener = urllib2.build_opener(proxy_support)
-urllib2.install_opener(opener)
+proxy_support = urllib.request.ProxyHandler({})
+opener = urllib.request.build_opener(proxy_support)
+urllib.request.install_opener(opener)
+
 
 class DisqusException(Exception):
+
     """Exception raised for errors with the DISQUS API."""
     pass
 
+
 class DisqusClient(object):
+
     """
     Client for the DISQUS API.
 
@@ -65,9 +71,9 @@ class DisqusClient(object):
         if request_method == 'GET':
             if params:
                 request_url += '&%s' % urlencode(params)
-            request = urllib2.Request(request_url)
+            request = urllib.request.Request(request_url)
         elif request_method == 'POST':
-            request = urllib2.Request(request_url, urlencode(params,doseq=1))
+            request = urllib.request.Request(request_url, urlencode(params, doseq=1))
         return request
 
     def call(self, method, **params):
@@ -79,8 +85,8 @@ class DisqusClient(object):
         url = self.api_url % method
         request = self._get_request(url, self.METHODS[method], **params)
         try:
-            response = urllib2.urlopen(request)
-        except urllib2.URLError, e:
+            response = urllib.request.urlopen(request)
+        except urllib.error.URLError:
             raise
         else:
             response_json = json.loads(response.read())
