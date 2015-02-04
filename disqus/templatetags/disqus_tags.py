@@ -70,7 +70,7 @@ def disqus_dev(context):
 
 
 @register.simple_tag(takes_context=True)
-def disqus_sso(context, avatar=None, url=None):
+def disqus_sso(context, username=None, avatar=None, url=None):
     """
     Return the HTML/js code to enable DISQUS SSO - so logged in users on
     your site can be logged in to disqus seemlessly.
@@ -85,9 +85,12 @@ def disqus_sso(context, avatar=None, url=None):
     user = context['user']
     if user.is_anonymous():
         return ""
+    # setup username
+    if username is None:
+        username = user.username
     # construct the payload
     payload = {'id': user.id,
-               'username': user.username,
+               'username': username,
                'email': user.email}
     if avatar is not None:
         payload['avatar'] = avatar
